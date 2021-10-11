@@ -1,6 +1,8 @@
+// ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:helloflutter/drawer.dart';
-import 'package:helloflutter/name_card_widget.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -10,22 +12,32 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var myText = "change my name";
-  TextEditingController _nameController = TextEditingController();
-
+  var url = "https://jsonplaceholder.typicode.com/photos";
+  var data;
   // initialize var before creating widgets
   @override
   void initState() {
     super.initState();
+    fetchData();
   }
 
-  // called when screen is destroyed 
+  fetchData() async {
+    // async  several tasks at the same time
+    // sync one task at a time
+    var res = await http.get(Uri.parse(url));
+    data = jsonDecode(res.body);
+    setState(() {});
+    print(data);
+  }
+
+  // called when screen is destroyed
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
   }
-  
+
+  // context is the location of the widget in widget tree
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,21 +45,25 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('Awesome app'),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
-            child: NameCardWidget(myText: myText, nameController: _nameController),
-          ),
-        ),
-      ),
+      body: data != null
+          ? ListView.builder(
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(
+                    data[index]["title"],
+                  ),
+                  subtitle: Text("ID: ${data[index]["id"]}"),
+                  leading: Image.network(data[index]["url"]),
+                );
+              },
+              itemCount: data.length,
+            )
+          : Center(
+              child: CircularProgressIndicator(),
+            ),
       drawer: MyDrawer(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          myText = _nameController.text;
-          // called every time a change is made
-          setState(() {});
-        },
+        onPressed: () {},
         child: Icon(Icons.send),
       ),
     );
