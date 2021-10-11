@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class HomePage extends StatefulWidget {
+  static const routeName = "/home";
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -42,9 +43,14 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      appBar: AppBar(
-        title: Text('Awesome app'),
-      ),
+      appBar: AppBar(title: Text('Awesome app'), actions: [
+        IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.exit_to_app),
+        )
+      ]),
       body: data != null
           ? ListView.builder(
               itemBuilder: (context, index) {
