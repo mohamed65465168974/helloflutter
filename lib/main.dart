@@ -9,7 +9,7 @@ void main() {
     MaterialApp(
       home: HomePage(),
       theme: ThemeData(
-        primarySwatch: Colors.purple,
+      primarySwatch: Colors.purple,
       ),
     ),
   );
@@ -25,7 +25,34 @@ class HomePage extends StatelessWidget {
         title: Text('Awesome app'),
       ),
       body: Container(
-        child: Text("hi flutter"),
+        width: 300,
+        color: Colors.teal,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+          Container(
+          padding: const EdgeInsets.all(8) ,
+          width: 100,
+          height: 100,
+          color: Colors.red,
+          alignment: Alignment.center,
+        ),
+        Container(
+          padding: const EdgeInsets.all(8) ,
+          width: 100,
+          height: 100,
+          color: Colors.yellow,
+          alignment: Alignment.center,
+        ),
+        Container(
+          padding: const EdgeInsets.all(8) ,
+          width: 100,
+          height: 100,
+          color: Colors.green,
+          alignment: Alignment.center,
+        ),
+        ],),
       ),
     );
   }
