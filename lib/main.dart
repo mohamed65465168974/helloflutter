@@ -3,11 +3,14 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:helloflutter/pages/home_page.dart';
 import 'package:helloflutter/pages/login_page.dart';
-
-void main() {
+import 'package:helloflutter/utils/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+Future main() async {
   // widgets
   // material app
   // cupertino app
+  WidgetsFlutterBinding.ensureInitialized();
+  Constants.prefs = await SharedPreferences.getInstance();
   runApp(
     MyApp(),
   );
@@ -20,11 +23,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+      home: Constants.prefs.getBool("loggedIn") == true ? HomePage():LoginPage(),
       theme: ThemeData(primarySwatch: Colors.green),
       routes: {
-        LoginPage.routeName : (context) => LoginPage(),
-        HomePage.routeName : (context) => HomePage(),
+        LoginPage.routeName: (context) => LoginPage(),
+        HomePage.routeName: (context) => HomePage(),
       },
     );
   }
